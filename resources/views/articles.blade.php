@@ -168,11 +168,11 @@
                             @php
                                 $currentCategory = $categories->firstWhere('slug', request()->segment(2));
                             @endphp
-                            <p class="text-gray-400 text-lg rtl mb-2">لا توجد مقالات في فئة "{{ $currentCategory ? $currentCategory->name_ar : 'هذه الفئة' }}" حالياً</p>
-                            <p class="text-gray-500 text-sm rtl">تصفح الفئات الأخرى أو عد لاحقاً للمزيد من المحتوى</p>
+                            <p class="text-gray-400 text-lg {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }} mb-2">لا توجد مقالات في فئة "{{ $currentCategory ? $currentCategory->name_ar : 'هذه الفئة' }}" حالياً</p>
+                            <p class="text-gray-500 text-sm {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">تصفح الفئات الأخرى أو عد لاحقاً للمزيد من المحتوى</p>
                         @else
-                            <p class="text-gray-400 text-lg rtl mb-2">لا توجد مقالات منشورة حالياً</p>
-                            <p class="text-gray-500 text-sm rtl">عد لاحقاً للمزيد من المحتوى الجديد</p>
+                            <p class="text-gray-400 text-lg {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }} mb-2">لا توجد مقالات منشورة حالياً</p>
+                            <p class="text-gray-500 text-sm {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">عد لاحقاً للمزيد من المحتوى الجديد</p>
                         @endif
                     </div>
                 @endforelse

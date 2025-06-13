@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 return [
     'greeting' => 'HELLO I\'M OSAMA AYESH',
@@ -9,9 +9,9 @@ return [
         'laravel' => 'Laravel Developer',
         'aws' => 'AWS',
     ],
-    'description' => 'Passionate web developer, dedicated to creating user-friendly and responsive websites. I strive to blend creativity with functionality, ensuring seamless and engaging user experiences.',
+    'description' => 'As a dedicated web developer, I specialize    in crafting intuitive and responsive websites that seamlessly blend aesthetic appeal with functional excellence—delivering high-quality user experiences across all devices.',
     'download_resume' => 'Download Resume',
     
     // About page translations
   
-]; 
+];  
