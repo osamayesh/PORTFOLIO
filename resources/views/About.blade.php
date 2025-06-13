@@ -30,21 +30,20 @@
     <div class="bg-gray-900 bg-opacity-70 rounded-lg p-8 mb-16 border border-blue-900 hover:border-blue-500 transition-all duration-300">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Journey -->
-            <div class="text-center lg:text-right rtl">
-                <h3 class="text-2xl font-bold text-blue-400 mb-4 flex items-center justify-center lg:justify-start">
+            <div class="text-center {{ app()->getLocale() === 'ar' ? 'lg:text-right' : 'lg:text-left' }}">
+                <h3 class="text-2xl font-bold text-blue-400 mb-4 flex items-center justify-center {{ app()->getLocale() === 'ar' ? 'lg:justify-start' : 'lg:justify-start' }}">
                     <span class="mx-2">🚀</span>
                     <span>{{ __('about.biography.journey') }}</span>
                 </h3>
                 <div class="space-y-4 text-lg text-gray-300 leading-relaxed">
-                    <p>{{ __('about.biography.journey_start') }} <span class="text-blue-400 font-semibold">2017</span></p>
-                    <p>{{ __('about.biography.university') }}</p>
-                    <p>{{ __('about.biography.backend_focus') }} <span class="texture-text">Backend Development</span></p>
+                    <p>{{ __('about.biography.journey_start') }} 
+                     <span class="texture-text">Full Stack Development</span></p>
                 </div>
             </div>
             
             <!-- Experience -->
-            <div class="text-center lg:text-right rtl">
-                <h3 class="text-2xl font-bold text-blue-400 mb-4 flex items-center justify-center lg:justify-start">
+            <div class="text-center {{ app()->getLocale() === 'ar' ? 'lg:text-right' : 'lg:text-left' }}">
+                <h3 class="text-2xl font-bold text-blue-400 mb-4 flex items-center justify-center {{ app()->getLocale() === 'ar' ? 'lg:justify-start' : 'lg:justify-start' }}">
                     <span class="mx-2">💼</span>
                     <span>{{ __('about.biography.experience') }}</span>
                 </h3>
@@ -63,7 +62,7 @@
             <span class="mx-4 text-xl text-gray-300 font-medium">{{ __('about.quick_links.read_here') }}</span>
         </div>
         
-        <div class="flex flex-col sm:flex-row justify-center gap-6">
+        <div class="flex flex-col sm:flex-row justify-center gap-6 {{ app()->getLocale() === 'ar' ? 'sm:flex-row-reverse' : '' }}">
             <a href="{{ url('summaries') }}" class="flex items-center justify-center gap-3 px-8 py-6 bg-blue-600 bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all duration-300 border border-blue-500 hover:border-blue-400 hover:scale-105">
                 <span class="text-yellow-400 text-3xl">📁</span>
                 <span class="text-xl font-semibold">{{ __('about.quick_links.summaries') }}</span>
@@ -154,10 +153,6 @@
 
 @push('styles')
 <style>
-    .rtl {
-        direction: rtl;
-    }
-    
     .texture-text {
         background-image: linear-gradient(
             45deg, 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{ app()->getLocale() === 'ar' ? 'class="rtl"' : '' }}>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" {{ app()->getLocale() === 'ar' ? 'class="rtl"' : '' }}>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,6 +116,53 @@
             .rtl .language-switcher {
                 direction: ltr; /* Keep language switcher in LTR */
                 display: flex;
+            }
+            
+            /* Additional RTL improvements */
+            .rtl .flex {
+                direction: rtl;
+            }
+            
+            .rtl .flex-col {
+                direction: ltr; /* Keep vertical layouts normal */
+            }
+            
+            .rtl .text-center {
+                text-align: center;
+            }
+            
+            .rtl .text-left {
+                text-align: right;
+            }
+            
+            .rtl .text-right {
+                text-align: left;
+            }
+            
+            /* RTL specific margin and padding adjustments */
+            .rtl .ml-auto {
+                margin-left: auto;
+                margin-right: 0;
+            }
+            
+            .rtl .mr-auto {
+                margin-right: auto;
+                margin-left: 0;
+            }
+            
+            /* Arabic typography */
+            .rtl {
+                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', 'Segoe UI', sans-serif;
+            }
+            
+            .rtl h1, .rtl h2, .rtl h3, .rtl h4, .rtl h5, .rtl h6 {
+                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', sans-serif;
+                font-weight: bold;
+            }
+            
+            .rtl p, .rtl span, .rtl div {
+                line-height: 1.8;
+                font-size: 1.05em;
             }
             
             .top-header {
@@ -386,7 +433,7 @@
             <!-- Header/Navigation -->
             <header class="w-full py-6">
                 <nav class="container mx-auto flex items-center justify-center px-4 md:px-0">
-                    <ul class="flex space-x-8 md:space-x-12">
+                    <ul class="flex {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-8 md:space-x-12' : 'space-x-8 md:space-x-12' }}">
                         <li>
                             <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }} pb-1 font-medium">{{ __('navigation.home') }}</a>
                         </li>
@@ -413,10 +460,9 @@
                             </a>
                             <div class="dropdown-content">
                                 <a href="{{ url('articles') }}" class="dropdown-item">{{ __('navigation.articles') }}</a>
-                                <a href="{{ url('articles/technical') }}" class="dropdown-item">{{ __('navigation.articles_technical') }}</a>
-                                <a href="{{ url('articles/programming') }}" class="dropdown-item">{{ __('navigation.articles_programming') }}</a>
-                                <a href="{{ url('articles/tutorials') }}" class="dropdown-item">{{ __('navigation.articles_tutorials') }}</a>
-                                <a href="{{ url('articles/tips') }}" class="dropdown-item">{{ __('navigation.articles_tips') }}</a>
+                                <a href="{{ route('articles.category', 'programming-basics') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'أساسيات البرمجة' : 'Programming Basics' }}</a>
+                                <a href="{{ route('articles.category', 'databases') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'قواعد البيانات' : 'Database' }}</a>
+                                <a href="{{ route('articles.category', 'w') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'إطارات تطوير الويب' : 'Web Development Framework' }}</a>
                             </div>
                         </li>
                         
@@ -456,7 +502,7 @@
                     </div>
                     
                     <!-- Social links -->
-                    <div class="flex justify-center space-x-6 mb-4">
+                    <div class="flex justify-center {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-6' : 'space-x-6' }} mb-4">
                         <a href="https://github.com/osamayesh" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>

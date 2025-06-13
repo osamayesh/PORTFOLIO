@@ -4,10 +4,10 @@ return [
     'title' => 'Software Engineer specialized in',
     'full_stack' => 'Full Stack Development',
     'biography' => [
-        'journey_start' => 'I started my programming journey in 2017 with game development, participated in game development competitions, and wrote articles about game programming.',
-        'university' => 'Then I joined Suez Canal University in Ismailia, Faculty of Computers and Information, and studied Computer Science.',
-        'backend_focus' => 'After graduation, I moved to focus on Backend specialization and everything around it, studied and learned the fundamental concepts.',
-        'work_experience' => 'Thank God, I joined various companies and projects, gained many friends, colleagues, enjoyment, and experience in this field.',
+        'journey_start' => 'I began my journey in programming during my university years at Al-Balqa Applied University in Salt, where I studied Computer Science. I joined a volunteer team to support fellow students, then completed a .NET Full Stack training at Tech Stack, leading real-world projects as a Project Manager and backend developer.This experience deepened my interest in',
+
+        
+        'work_experience' => 'Thank God, I worked on several freelance projects and briefly joined a tech company. These experiences enhanced my technical skills, teamwork, and client communication.',
         'content_creation' => 'Besides this, I love writing articles and summaries about what I master to simplify it for others and enrich Arabic content.',
          'journey' => 'My Journey',
         'experience' => 'My Experience'

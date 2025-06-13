@@ -27,11 +27,11 @@
             </div>
             
             <!-- Education Details -->
-            <div class="flex-grow text-center lg:text-right rtl">
+            <div class="flex-grow text-center {{ app()->getLocale() === 'ar' ? 'lg:text-right' : 'lg:text-left' }}">
                 <div class="mb-4">
                     <h2 class="text-2xl md:text-3xl font-bold texture-text mb-2">{{ __('education.university') }}</h2>
                     <h3 class="text-xl md:text-2xl text-gray-300 mb-2">{{ __('education.degree') }}</h3>
-                    <div class="flex items-center justify-center lg:justify-start gap-2 text-blue-400">
+                    <div class="flex items-center justify-center {{ app()->getLocale() === 'ar' ? 'lg:justify-start' : 'lg:justify-start' }} gap-2 text-blue-400">
                         <span class="text-lg">📅</span>
                         <span class="text-lg font-medium">{{ __('education.duration') }}</span>
                     </div>
@@ -155,10 +155,6 @@
 
 @push('styles')
 <style>
-    .rtl {
-        direction: rtl;
-    }
-    
     .texture-text {
         background-image: linear-gradient(
             45deg, 
