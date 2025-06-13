@@ -460,10 +460,9 @@
                             </a>
                             <div class="dropdown-content">
                                 <a href="{{ url('articles') }}" class="dropdown-item">{{ __('navigation.articles') }}</a>
-                                <a href="{{ url('articles/technical') }}" class="dropdown-item">{{ __('navigation.articles_technical') }}</a>
-                                <a href="{{ url('articles/programming') }}" class="dropdown-item">{{ __('navigation.articles_programming') }}</a>
-                                <a href="{{ url('articles/tutorials') }}" class="dropdown-item">{{ __('navigation.articles_tutorials') }}</a>
-                                <a href="{{ url('articles/tips') }}" class="dropdown-item">{{ __('navigation.articles_tips') }}</a>
+                                <a href="{{ route('articles.category', 'programming-basics') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'أساسيات البرمجة' : 'Programming Basics' }}</a>
+                                <a href="{{ route('articles.category', 'databases') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'قواعد البيانات' : 'Database' }}</a>
+                                <a href="{{ route('articles.category', 'w') }}" class="dropdown-item">{{ app()->getLocale() === 'ar' ? 'إطارات تطوير الويب' : 'Web Development Framework' }}</a>
                             </div>
                         </li>
                         
