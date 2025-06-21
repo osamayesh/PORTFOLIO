@@ -44,65 +44,96 @@
         </div>
     </div>
 
-    <!-- Subjects Section -->
+    <!-- Internships Section -->
     <div class="mb-16">
         <div class="flex items-center justify-center mb-12">
             <div class="w-32 h-1 bg-blue-500"></div>
             <h2 class="text-3xl font-bold mx-4 text-blue-400 flex items-center">
-                <span class="mx-2">📚</span>
-                <span>{{ __('education.subjects.title') }}</span>
+                <span class="mx-2">💼</span>
+                <span>{{ __('education.internships.title') }}</span>
             </h2>
             <div class="w-32 h-1 bg-blue-500"></div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">💻</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.programming') }}</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Internship Item -->
+            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                    <div class="text-3xl">🏢</div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold text-blue-300 mb-2">{{ __('education.internships.company_1') }}</h3>
+                        <p class="text-gray-300 mb-2">{{ __('education.internships.position_1') }}</p>
+                        <p class="text-sm text-blue-400">{{ __('education.internships.duration_1') }}</p>
+                        <p class="text-gray-400 mt-2">{{ __('education.internships.description_1') }}</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">🔢</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.algorithms') }}</h3>
+            <!-- Internship Item -->
+            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                    <div class="text-3xl">🚀</div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold text-blue-300 mb-2">{{ __('education.internships.company_2') }}</h3>
+                        <p class="text-gray-300 mb-2">{{ __('education.internships.position_2') }}</p>
+                        <p class="text-sm text-blue-400">{{ __('education.internships.duration_2') }}</p>
+                        <p class="text-gray-400 mt-2">{{ __('education.internships.description_2') }}</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">🏗️</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.software_engineering') }}</h3>
+            <!-- Internship Item -->
+            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300">
+                <div class="flex items-start gap-4">
+                    <div class="text-3xl">🎯</div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold text-blue-300 mb-2">{{ __('education.internships.company_3') }}</h3>
+                        <p class="text-gray-300 mb-2">{{ __('education.internships.position_3') }}</p>
+                        <p class="text-sm text-blue-400">{{ __('education.internships.duration_3') }}</p>
+                        <p class="text-gray-400 mt-2">{{ __('education.internships.description_3') }}</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Subject Item -->
+          
+         
+        </div>
+    </div>
+
+    <!-- Certificates Section -->
+    <div class="mb-16">
+        <div class="flex items-center justify-center mb-12">
+        <div class="flex items-start gap-4">
+            <div class="w-32 h-1 bg-blue-500"></div>
+            <h2 class="text-3xl font-bold mx-4 text-blue-400 flex items-center">
+                <span class="mx-2">📄</span>
+                <span>{{ __('education.certificates.title') }}</span>
+            </h2>
+            <div class="w-32 h-1 bg-blue-500"></div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Certificate Item -->
             <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">🗃️</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.databases') }}</h3>
+                <div class="text-3xl mb-3">🏆</div>
+                <h3 class="text-lg font-bold text-blue-300 mb-2">{{ __('education.certificates.cert_1') }}</h3>
+                <p class="text-sm text-gray-400">{{ __('education.certificates.issuer_1') }}</p>
+                <p class="text-xs text-blue-400 mt-2">{{ __('education.certificates.date_1') }}</p>
             </div>
             
-            <!-- Subject Item -->
+            <!-- Certificate Item -->
             <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">🌐</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.networks') }}</h3>
+                <div class="text-3xl mb-3">🎖️</div>
+                <h3 class="text-lg font-bold text-blue-300 mb-2">{{ __('education.certificates.cert_2') }}</h3>
+                <p class="text-sm text-gray-400">{{ __('education.certificates.issuer_2') }}</p>
+                <p class="text-xs text-blue-400 mt-2">{{ __('education.certificates.date_2') }}</p>
             </div>
-            
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">⚙️</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.systems') }}</h3>
-            </div>
-            
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">🌍</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.web') }}</h3>
-            </div>
-            
-            <!-- Subject Item -->
-            <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg border border-blue-900 hover:border-blue-500 transition-all duration-300 text-center">
-                <div class="text-3xl mb-3">📊</div>
-                <h3 class="text-lg font-bold text-blue-300">{{ __('education.subjects.math') }}</h3>
-            </div>
+           
+
+
+
+
         </div>
     </div>
 

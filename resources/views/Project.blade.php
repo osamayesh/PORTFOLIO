@@ -170,6 +170,7 @@
                         <div class="flex flex-wrap gap-1 mb-1">
                             <span class="px-2 py-0.5 bg-red-900 text-red-200 text-xs rounded">blazor web assembly</span>
                             <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">local storage</span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">pwa</span>
                         </div>
                         
                     </div>
@@ -181,11 +182,11 @@
                             {{ __('projects.contact_desc') }}
                         </p>
                         <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-0.5 bg-red-900 text-red-200 text-xs rounded">PHP</span>
-                            <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">MySQL</span>
-                            <span class="px-2 py-0.5 bg-yellow-900 text-yellow-200 text-xs rounded">jQuery</span>
+                            <span class="px-2 py-0.5 bg-red-900 text-red-200 text-xs rounded">blazor web assembly</span>
+                            <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">local storage</span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">pwa</span>
                         </div>
-                        <a href="https://github.com/osamayesh/curdEmpForm" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-sm">
+                        <a href="https://github.com/osamayesh/Blazor-Web-Assembly-Progressive-Web-App-" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                             </svg>

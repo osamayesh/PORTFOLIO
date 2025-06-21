@@ -34,7 +34,7 @@
         {{ __('welcome.description') }}
     </p>
     
-    <a href="#" class="inline-block px-8 py-3 bg-transparent border-2 border-blue-500 text-blue-400 rounded-md 
+    <a href="{{ route('cv.download') }}" class="inline-block px-8 py-3 bg-transparent border-2 border-blue-500 text-blue-400 rounded-md 
                      font-medium hover:bg-blue-900 hover:bg-opacity-30 transition-all duration-300
                      shadow-lg shadow-blue-500/30">
         {{ __('welcome.download_resume') }}

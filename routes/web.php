@@ -54,6 +54,9 @@ Route::get('/summaries/{id}/view', [SummaryController::class, 'view'])->name('su
 Route::get('/summaries/{id}/download', [SummaryController::class, 'download'])->name('summaries.download')->middleware('throttle:5,1');
 Route::get('/pdfs/{filename}', [SummaryController::class, 'servePdf'])->name('pdfs.serve')->middleware('throttle:10,1');
 
+// CV Download route
+Route::get('/download/cv', [\App\Http\Controllers\DownloadController::class, 'downloadCV'])->name('cv.download')->middleware('throttle:10,1');
+
 Route::get('/contact', function () {
     return view('contact');
 });
