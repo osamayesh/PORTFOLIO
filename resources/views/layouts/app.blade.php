@@ -102,10 +102,21 @@
                 background: #0dd3ff;
                 opacity: 1;
             }
-              /* New styles for the top header */
+              /* RTL (Right-to-Left) Styles - Consolidated */
               .rtl {
                 direction: rtl;
                 text-align: right;
+                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', 'Segoe UI', sans-serif;
+            }
+            
+            .rtl h1, .rtl h2, .rtl h3, .rtl h4, .rtl h5, .rtl h6 {
+                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', sans-serif;
+                font-weight: bold;
+            }
+            
+            .rtl p, .rtl span, .rtl div {
+                line-height: 1.8;
+                font-size: 1.05em;
             }
             
             .rtl .nav-link::after {
@@ -118,7 +129,7 @@
                 display: flex;
             }
             
-            /* Additional RTL improvements */
+            /* RTL Layout Adjustments */
             .rtl .flex {
                 direction: rtl;
             }
@@ -139,7 +150,7 @@
                 text-align: left;
             }
             
-            /* RTL specific margin and padding adjustments */
+            /* RTL Margin and Padding Adjustments */
             .rtl .ml-auto {
                 margin-left: auto;
                 margin-right: 0;
@@ -148,21 +159,6 @@
             .rtl .mr-auto {
                 margin-right: auto;
                 margin-left: 0;
-            }
-            
-            /* Arabic typography */
-            .rtl {
-                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', 'Segoe UI', sans-serif;
-            }
-            
-            .rtl h1, .rtl h2, .rtl h3, .rtl h4, .rtl h5, .rtl h6 {
-                font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', 'Tahoma', sans-serif;
-                font-weight: bold;
-            }
-            
-            .rtl p, .rtl span, .rtl div {
-                line-height: 1.8;
-                font-size: 1.05em;
             }
             
             .top-header {
@@ -269,17 +265,204 @@
                 z-index: -1;
             }
             
+            /* Mobile Navigation Styles */
+            .mobile-nav-toggle {
+                display: none;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                z-index: 1001;
+                position: relative;
+                padding: 0.5rem;
+                border-radius: 0.25rem;
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-nav-toggle:hover {
+                background: rgba(59, 130, 246, 0.2);
+            }
+            
+            .mobile-nav {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(10px);
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            .mobile-nav.active {
+                transform: translateX(0);
+            }
+            
+            .mobile-nav-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                min-height: 100%;
+                gap: 1rem;
+                padding: 4rem 1rem 2rem;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+            
+            .mobile-nav .nav-link {
+                font-size: 1.1rem;
+                color: white;
+                text-decoration: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                transition: all 0.3s ease;
+                text-align: center;
+                width: 100%;
+                max-width: 280px;
+                border: 1px solid transparent;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .mobile-nav .nav-link:hover,
+            .mobile-nav .nav-link.active {
+                background: rgba(59, 130, 246, 0.2);
+                color: #3bc9db;
+                border-color: rgba(59, 130, 246, 0.3);
+                transform: translateY(-2px);
+            }
+            
+            .mobile-dropdown {
+                background: rgba(31, 41, 55, 0.9);
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-top: 0.5rem;
+                border: 1px solid rgba(59, 130, 246, 0.2);
+            }
+            
+            .mobile-dropdown a {
+                display: block;
+                padding: 0.75rem;
+                font-size: 1rem;
+                color: #d1d5db;
+                text-decoration: none;
+                border-radius: 0.25rem;
+                transition: all 0.3s ease;
+                text-align: center;
+            }
+            
+            .mobile-dropdown a:hover {
+                background: rgba(59, 130, 246, 0.2);
+                color: white;
+            }
+            
+            /* RTL Support for Mobile Navigation */
+            .rtl .mobile-nav-content {
+                direction: ltr; /* Keep navigation items in a consistent layout */
+            }
+            
+            .rtl .mobile-nav .nav-link {
+                text-align: center; /* Keep centered regardless of language */
+            }
+            
+            /* Ensure mobile navigation is always visible */
             @media (max-width: 768px) {
+                .mobile-nav {
+                    display: block !important;
+                }
+                
+                .mobile-nav-toggle {
+                    display: block !important;
+                }
+                
+                /* Fix for potential language-specific issues */
+                .mobile-nav .nav-link {
+                    display: block;
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+
+            /* Mobile First Responsive Design */
+            @media (max-width: 768px) {
+                .top-header .container {
+                    padding: 0 1rem;
+                }
+                
+                .current-date {
+                    font-size: 0.8rem;
+                }
+                
                 .bismillah-header span {
-                    font-size: 16px;
-                    letter-spacing: 1.5px;
+                    font-size: 14px;
+                    letter-spacing: 1px;
+                }
+                
+                .language-switcher {
+                    padding: 4px 8px;
+                    font-size: 0.8rem;
+                }
+                
+                /* Show mobile navigation elements */
+                .mobile-nav-toggle {
+                    display: block;
+                }
+                
+                .mobile-nav {
+                    display: block;
                 }
             }
             
             @media (max-width: 480px) {
                 .bismillah-header span {
-                    font-size: 14px;
-                    letter-spacing: 1px;
+                    font-size: 12px;
+                    letter-spacing: 0.5px;
+                }
+                
+                .top-header .container {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                }
+                
+                .current-date,
+                .language-switcher {
+                    font-size: 0.75rem;
+                }
+            }
+            
+            /* Desktop Navigation Control */
+            .desktop-navigation {
+                display: none; /* Hidden by default (mobile first) */
+            }
+            
+            /* Mobile screens - hide desktop navigation completely */
+            @media (max-width: 768px) {
+                .desktop-navigation {
+                    display: none !important;
+                }
+            }
+            
+            /* Larger screens */
+            @media (min-width: 769px) {
+                .mobile-nav-toggle {
+                    display: none !important;
+                }
+                
+                .mobile-nav {
+                    display: none !important;
+                }
+                
+                .desktop-navigation {
+                    display: block !important;
                 }
             }
             
@@ -388,6 +571,27 @@
                 margin-left: 0;
                 margin-right: 8px;
             }
+            
+            /* Mobile Dropdown Adjustments */
+            @media (max-width: 768px) {
+                .dropdown-content {
+                    position: static;
+                    opacity: 1;
+                    visibility: visible;
+                    transform: none;
+                    box-shadow: none;
+                    border: none;
+                    background: transparent;
+                    padding: 0;
+                    min-width: auto;
+                }
+                
+                .dropdown:hover .dropdown-content {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: none;
+                }
+            }
         </style>
         
         @stack('styles')
@@ -399,20 +603,27 @@
 
         <!-- Main content container -->
         <div class="relative z-10 min-h-screen flex flex-col">
-            <div class="top-header w-full py-3">
-                <div class="container mx-auto flex justify-between items-center px-4 md:px-6">
+            <div class="top-header w-full py-2 md:py-3">
+                <div class="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-6">
                     @php
                         use App\Services\DateFormatterService;
                         $currentDate = DateFormatterService::getCurrentDate();
                     @endphp
                     
-                    <!-- Current Date Display -->
-                    <div class="current-date">
-                        <span class="text-sm text-gray-300 font-medium {{ app()->getLocale() === 'ar' ? 'rtl' : '' }}">{{ $currentDate }}</span>
+                    <div class="flex justify-between items-center w-full md:w-auto">
+                        <!-- Current Date Display -->
+                        <div class="current-date">
+                            <span class="text-xs md:text-sm text-gray-300 font-medium {{ app()->getLocale() === 'ar' ? 'rtl' : '' }}">{{ $currentDate }}</span>
+                        </div>
+                        
+                        <!-- Mobile Navigation Toggle -->
+                        <button class="mobile-nav-toggle md:hidden" onclick="toggleMobileNav()">
+                            <span id="nav-icon">☰</span>
+                        </button>
                     </div>
                     
-                    <!-- Bismillah -->
-                    <div class="bismillah-header">
+                    <!-- Bismillah (Hidden on mobile) -->
+                    <div class="bismillah-header hidden md:flex">
                         <span>بسم الله الرحمن الرحيم</span>
                     </div>
                     
@@ -430,31 +641,77 @@
                     </div>
                 </div>
             </div>
-            <!-- Header/Navigation -->
-            <header class="w-full py-6">
-                <nav class="container mx-auto flex items-center justify-center px-4 md:px-0">
-                    <ul class="flex {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-8 md:space-x-12' : 'space-x-8 md:space-x-12' }}">
+            
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <div class="mobile-nav-content">
+                    <!-- Bismillah for mobile -->
+                    <div class="bismillah-header mb-2">
+                        <span class="text-sm">بسم الله الرحمن الرحيم</span>
+                    </div>
+                    
+                    <!-- Main Navigation Links -->
+                    <div class="w-full flex flex-col items-center gap-2">
+                        <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">{{ __('navigation.home') }}</a>
+                        <a href="{{ url('about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">{{ __('navigation.about') }}</a>
+                        <a href="{{ url('education') }}" class="nav-link {{ request()->is('education') ? 'active' : '' }}">{{ __('navigation.education') }}</a>
+                        <a href="{{ url('services') }}" class="nav-link {{ request()->is('services') ? 'active' : '' }}">{{ __('navigation.services') }}</a>
+                        <a href="{{ url('projects') }}" class="nav-link {{ request()->is('projects') ? 'active' : '' }}">{{ __('navigation.projects') }}</a>
+                        <a href="{{ url('articles') }}" class="nav-link {{ request()->is('articles*') ? 'active' : '' }}">{{ __('navigation.articles') }}</a>
+                        <a href="{{ url('summaries') }}" class="nav-link {{ request()->is('summaries*') ? 'active' : '' }}">{{ __('navigation.summaries') }}</a>
+                    </div>
+                    
+                    <!-- Compact Dropdowns -->
+                    <div class="w-full mt-4 space-y-2">
+                        <!-- Articles Sub-links -->
+                        <div class="text-center">
+                            <div class="mobile-dropdown">
+                                <p class="text-gray-400 text-sm mb-2">{{ __('navigation.articles') }} Categories:</p>
+                                <a href="{{ route('articles.category', 'programming-basics') }}">{{ app()->getLocale() === 'ar' ? 'أساسيات البرمجة' : 'Programming Basics' }}</a>
+                                <a href="{{ route('articles.category', 'databases') }}">{{ app()->getLocale() === 'ar' ? 'قواعد البيانات' : 'Database' }}</a>
+                                <a href="{{ route('articles.category', 'w') }}">{{ app()->getLocale() === 'ar' ? 'إطارات تطوير الويب' : 'Web Framework' }}</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Summaries Sub-links -->
+                        <div class="text-center">
+                            <div class="mobile-dropdown">
+                                <p class="text-gray-400 text-sm mb-2">{{ __('navigation.summaries') }} Types:</p>
+                                <a href="{{ url('summaries/books') }}">{{ __('navigation.summaries_books') }}</a>
+                                <a href="{{ url('summaries/courses') }}">{{ __('navigation.summaries_courses') }}</a>
+                                <a href="{{ url('summaries/documentation') }}">{{ __('navigation.summaries_documentation') }}</a>
+                                <a href="{{ url('summaries/research') }}">{{ __('navigation.summaries_research') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Header/Navigation (Desktop Only) -->
+            <header class="desktop-navigation">
+                <nav class="container mx-auto flex items-center justify-center px-4 md:px-0 py-4 md:py-6">
+                    <ul class="flex flex-wrap justify-center {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-4 md:space-x-8 lg:space-x-12' : 'space-x-4 md:space-x-8 lg:space-x-12' }}">
                         <li>
-                            <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }} pb-1 font-medium">{{ __('navigation.home') }}</a>
+                            <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }} pb-1 font-medium text-sm md:text-base">{{ __('navigation.home') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url('about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }} text-gray-300 transition-colors duration-300">{{ __('navigation.about') }}</a>
+                            <a href="{{ url('about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }} text-gray-300 transition-colors duration-300 text-sm md:text-base">{{ __('navigation.about') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url('education') }}" class="nav-link {{ request()->is('education') ? 'active' : '' }} text-gray-300 transition-colors duration-300">{{ __('navigation.education') }}</a>
+                            <a href="{{ url('education') }}" class="nav-link {{ request()->is('education') ? 'active' : '' }} text-gray-300 transition-colors duration-300 text-sm md:text-base">{{ __('navigation.education') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url('services') }}" class="nav-link {{ request()->is('services') ? 'active' : '' }} text-gray-300 transition-colors duration-300">{{ __('navigation.services') }}</a>
+                            <a href="{{ url('services') }}" class="nav-link {{ request()->is('services') ? 'active' : '' }} text-gray-300 transition-colors duration-300 text-sm md:text-base">{{ __('navigation.services') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url('projects') }}" class="nav-link {{ request()->is('projects') ? 'active' : '' }} text-gray-300 transition-colors duration-300">{{ __('navigation.projects') }}</a>
+                            <a href="{{ url('projects') }}" class="nav-link {{ request()->is('projects') ? 'active' : '' }} text-gray-300 transition-colors duration-300 text-sm md:text-base">{{ __('navigation.projects') }}</a>
                         </li>
                       
                         <!-- Articles Dropdown -->
                         <li class="dropdown">
-                            <a href="{{ url('articles') }}" class="nav-link dropdown-toggle {{ request()->is('articles*') ? 'active' : '' }} flex items-center space-x-1 text-gray-300 transition-colors duration-300">
+                            <a href="{{ url('articles') }}" class="nav-link dropdown-toggle {{ request()->is('articles*') ? 'active' : '' }} flex items-center space-x-1 text-gray-300 transition-colors duration-300 text-sm md:text-base">
                                 <span>{{ __('navigation.articles') }}</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </a>
@@ -468,9 +725,9 @@
                         
                         <!-- Summaries Dropdown -->
                         <li class="dropdown">
-                            <a href="{{ url('summaries') }}" class="nav-link dropdown-toggle {{ request()->is('summaries*') ? 'active' : '' }} flex items-center gap-2 text-gray-300 transition-colors duration-300">
+                            <a href="{{ url('summaries') }}" class="nav-link dropdown-toggle {{ request()->is('summaries*') ? 'active' : '' }} flex items-center gap-2 text-gray-300 transition-colors duration-300 text-sm md:text-base">
                                 <!-- PDF icon SVG -->
-                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6v-2H6V4h9v5h5v11h-5v2h5a2 2 0 0 0 2-2V8l-6-6H6z"/>
                                     <path d="M9 13h1v4H9v-4zm2 0h1.5a1.5 1.5 0 0 1 0 3H11v-3zm1.5 2a.5.5 0 0 0 0-1H12v1h.5zm2-2H16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4zm1 3v-2h-.5v2h.5z"/>
                                 </svg>
@@ -494,38 +751,38 @@
             </main>
             
             <!-- Footer -->
-            <footer class="py-8 text-gray-500">
+            <footer class="py-6 md:py-8 text-gray-500">
                 <div class="container mx-auto px-4">
                     <!-- Arabic verse -->
-                    <div class="text-center mb-6">
-                        <p class="bismillah text-lg mb-2">مَنْ عَمِلَ صَالِحًا مِّن ذَكَرٍ أَوْ أُنثَىٰ وَهُوَ مُؤْمِنٌ فَلَنُحْيِيَنَّهُ حَيَاةً طَيِّبَةً ۖ وَلَنَجْزِيَنَّهُمْ أَجْرَهُم بِأَحْسَنِ مَا كَانُوا يَعْمَلُونَ</p>
+                    <div class="text-center mb-4 md:mb-6">
+                        <p class="bismillah text-sm md:text-lg mb-2">مَنْ عَمِلَ صَالِحًا مِّن ذَكَرٍ أَوْ أُنثَىٰ وَهُوَ مُؤْمِنٌ فَلَنُحْيِيَنَّهُ حَيَاةً طَيِّبَةً ۖ وَلَنَجْزِيَنَّهُمْ أَجْرَهُم بِأَحْسَنِ مَا كَانُوا يَعْمَلُونَ</p>
                     </div>
                     
                     <!-- Social links -->
-                    <div class="flex justify-center {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-6' : 'space-x-6' }} mb-4">
+                    <div class="flex justify-center {{ app()->getLocale() === 'ar' ? 'space-x-reverse space-x-4 md:space-x-6' : 'space-x-4 md:space-x-6' }} mb-4">
                         <a href="https://github.com/osamayesh" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
                             </svg>
                         </a>
                         <a href="https://www.linkedin.com/in/osama-ayesh/" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                             </svg>
                         </a>
                         <a href="https://discord.gg/WQJ3uCzY" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
                             </svg>
                         </a>
                         <a href="mailto:osamaayeshdx@gmail.com" class="text-gray-400 hover:text-white transition-colors duration-300" target="_blank">
-                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                             <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1  0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v.01L12 13 20 6.01V6H4zm0 2.99V18h16V8.99l-8 6.99-8-6.99z"/>
                               </svg>
                           </a>
                     </div>
                     
-                    <p class="text-center">&copy; {{ date('Y') }} Osama Ayesh. All rights reserved.</p>
+                    <p class="text-center text-sm md:text-base">&copy; {{ date('Y') }} Osama Ayesh. All rights reserved.</p>
                 </div>
             </footer>
         </div>
@@ -543,6 +800,53 @@
         @stack('scripts')
 
         <script>
+            // Mobile Navigation Toggle
+            function toggleMobileNav() {
+                const mobileNav = document.getElementById('mobileNav');
+                const navIcon = document.getElementById('nav-icon');
+                
+                if (mobileNav && navIcon) {
+                    mobileNav.classList.toggle('active');
+                    navIcon.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+                    
+                    // Debug log
+                    console.log('Mobile nav toggled:', mobileNav.classList.contains('active'));
+                }
+            }
+            
+            // Ensure mobile navigation is working on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+                const mobileNav = document.getElementById('mobileNav');
+                
+                // Force show mobile nav elements on mobile
+                if (window.innerWidth <= 768) {
+                    if (mobileNavToggle) {
+                        mobileNavToggle.style.display = 'block';
+                    }
+                    if (mobileNav) {
+                        mobileNav.style.display = 'block';
+                    }
+                    
+                    // Hide desktop navigation
+                    const desktopNav = document.querySelector('.desktop-navigation');
+                    if (desktopNav) {
+                        desktopNav.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Close mobile nav on link click
+            document.querySelectorAll('.mobile-nav .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const mobileNav = document.getElementById('mobileNav');
+                    const navIcon = document.getElementById('nav-icon');
+                    
+                    mobileNav.classList.remove('active');
+                    navIcon.textContent = '☰';
+                });
+            });
+            
             // Configure Prism autoloader
             Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
             

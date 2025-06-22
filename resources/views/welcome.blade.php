@@ -3,12 +3,12 @@
 @section('title', 'Portfolio - Osama Ayesh')
 
 @section('content')
-<div class="container mx-auto max-w-4xl text-center py-20">
+<div class="container mx-auto max-w-4xl text-center py-12 md:py-20 px-4">
     
     
-    <h1 class="text-4xl md:text-6xl font-bold mb-4">{{ __('welcome.greeting') }}</h1>
+    <h1 class="text-3xl md:text-4xl lg:text-6xl font-bold mb-4">{{ __('welcome.greeting') }}</h1>
     
-    <div class="text-xl md:text-3xl font-bold mb-8">
+    <div class="text-lg md:text-xl lg:text-3xl font-bold mb-6 md:mb-8">
         <div class="technologies-container">
             <div class="technologies-slider">
                 <div class="technology-item">
@@ -30,13 +30,13 @@
         </div>
     </div>
     
-    <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-12">
+    <p class="text-base md:text-lg lg:text-xl text-gray-300 max-w-2xl mx-auto mb-8 md:mb-12 px-4">
         {{ __('welcome.description') }}
     </p>
     
-    <a href="{{ route('cv.download') }}" class="inline-block px-8 py-3 bg-transparent border-2 border-blue-500 text-blue-400 rounded-md 
+    <a href="{{ route('cv.download') }}" class="inline-block px-6 md:px-8 py-2 md:py-3 bg-transparent border-2 border-blue-500 text-blue-400 rounded-md 
                      font-medium hover:bg-blue-900 hover:bg-opacity-30 transition-all duration-300
-                     shadow-lg shadow-blue-500/30">
+                     shadow-lg shadow-blue-500/30 text-sm md:text-base">
         {{ __('welcome.download_resume') }}
     </a>
 </div>
@@ -109,31 +109,56 @@
     /* Simplified cycle animation */
     @keyframes technologies-cycle {
         0%, 19% { transform: translateY(0); }
-        20%, 39% { transform: translateY(-40px); }
-        40%, 59% { transform: translateY(-80px); }
-        60%, 79% { transform: translateY(-120px); }
-        80%, 99% { transform: translateY(-160px); }
+        20%, 39% { transform: translateY(-30px); }
+        40%, 59% { transform: translateY(-60px); }
+        60%, 79% { transform: translateY(-90px); }
+        80%, 99% { transform: translateY(-120px); }
         100% { transform: translateY(0); }
     }
     
     .technologies-container {
         position: relative;
-        height: 40px;
-        margin-bottom: 40px;
+        height: 30px;
+        margin-bottom: 30px;
         overflow: hidden;
     }
     
     .technologies-slider {
         position: relative;
-        height: 200px;
+        height: 150px;
         animation: technologies-cycle 20s infinite;
     }
     
     .technology-item {
-        height: 40px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (min-width: 768px) {
+        .technologies-container {
+            height: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .technologies-slider {
+            height: 200px;
+        }
+        
+        .technology-item {
+            height: 40px;
+        }
+        
+        @keyframes technologies-cycle {
+            0%, 19% { transform: translateY(0); }
+            20%, 39% { transform: translateY(-40px); }
+            40%, 59% { transform: translateY(-80px); }
+            60%, 79% { transform: translateY(-120px); }
+            80%, 99% { transform: translateY(-160px); }
+            100% { transform: translateY(0); }
+        }
     }
     
     /* For additional words that appear after typing */
@@ -207,6 +232,13 @@
         left: 0;
         background: #0dd3ff;
         opacity: 1;
+    }
+    
+    /* Mobile font size adjustments */
+    @media (max-width: 480px) {
+        .typewriter {
+            font-size: 0.9rem;
+        }
     }
 </style>
 @endpush
