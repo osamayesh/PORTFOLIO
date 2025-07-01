@@ -56,6 +56,12 @@
                         <!-- English Content -->
                         <div>
                             <label class="block text-sm font-medium text-gray-300 mb-2">Content (English) *</label>
+                            <div class="mb-2">
+                                <button type="button" id="retryEditorsBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm" style="display: none;">
+                                    🔄 Retry Loading Editors
+                                </button>
+                                <div id="editorStatus" class="text-sm text-gray-400"></div>
+                            </div>
                             <input id="content_en" type="hidden" name="content_en" value="{{ old('content_en', $formData['content_en'] ?? '') }}" required>
                             <div id="editor_en_container">
                                 <div id="editor_en" class="quill-editor-en"></div>
@@ -445,6 +451,30 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+<!-- Fallback for Quill JS if CDN fails -->
+<script>
+if (typeof Quill === 'undefined') {
+    console.warn('Quill CDN failed, loading from backup...');
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.min.js';
+    script.onload = function() {
+        console.log('Quill loaded from backup CDN');
+        // Retry initialization after backup loads
+        setTimeout(() => {
+            if (typeof initializeQuillEditors === 'function') {
+                initializeQuillEditors();
+            }
+        }, 100);
+    };
+    document.head.appendChild(script);
+    
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.snow.css';
+    document.head.appendChild(link);
+}
+</script>
+
 <style>
 /* Reset any conflicting styles first */
 .quill-editor-en, .quill-editor-ar {
@@ -783,18 +813,72 @@ let contentAfterEditors = {};
 let editorsInitialized = false;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Wait a bit to ensure DOM is fully loaded
+    console.log('DOM loaded, checking for Quill...');
+    updateEditorStatus('Loading editors...');
+    
+    // Setup retry button
+    const retryBtn = document.getElementById('retryEditorsBtn');
+    if (retryBtn) {
+        retryBtn.addEventListener('click', function() {
+            editorsInitialized = false;
+            updateEditorStatus('Retrying...');
+            retryBtn.style.display = 'none';
+            setTimeout(() => {
+                initializeQuillEditors();
+                initializeExistingContentAfterEditors();
+            }, 100);
+        });
+    }
+    
+    // Check if Quill is available
+    if (typeof Quill === 'undefined') {
+        console.error('Quill is not loaded! Make sure the CDN link is working.');
+        updateEditorStatus('❌ Quill library failed to load. Click retry button.');
+        showRetryButton();
+        return;
+    }
+    
+    // Wait a bit longer to ensure DOM is fully loaded and Quill is ready
     setTimeout(() => {
+        console.log('Initializing Quill editors...');
         initializeQuillEditors();
         initializeExistingContentAfterEditors();
-    }, 100);
+    }, 500);
     
     // Simple snippet management
-    document.getElementById('addCodeSnippet').addEventListener('click', showNextSnippet);
+    const addSnippetBtn = document.getElementById('addCodeSnippet');
+    if (addSnippetBtn) {
+        addSnippetBtn.addEventListener('click', showNextSnippet);
+    }
 });
 
+function updateEditorStatus(message) {
+    const statusDiv = document.getElementById('editorStatus');
+    if (statusDiv) {
+        statusDiv.textContent = message;
+    }
+}
+
+function showRetryButton() {
+    const retryBtn = document.getElementById('retryEditorsBtn');
+    if (retryBtn) {
+        retryBtn.style.display = 'inline-block';
+    }
+}
+
 function initializeQuillEditors() {
-    if (editorsInitialized) return;
+    if (editorsInitialized) {
+        console.log('Editors already initialized');
+        return;
+    }
+    
+    console.log('Starting editor initialization...');
+    
+    // Check if Quill is available
+    if (typeof Quill === 'undefined') {
+        console.error('Quill is not available');
+        return;
+    }
     
     // Destroy existing editors if they exist
     if (quillEn) {
@@ -841,65 +925,93 @@ function initializeQuillEditors() {
     // Initialize English Editor
     const englishContainer = document.getElementById('editor_en');
     if (englishContainer) {
-        quillEn = new Quill('#editor_en', {
-            theme: 'snow',
-            placeholder: 'Write your article content in English...',
-            modules: {
-                toolbar: englishToolbarConfig
+        console.log('Initializing English editor...');
+        try {
+            quillEn = new Quill('#editor_en', {
+                theme: 'snow',
+                placeholder: 'Write your article content in English...',
+                modules: {
+                    toolbar: englishToolbarConfig
+                }
+            });
+
+            // Set initial content
+            const contentEn = document.getElementById('content_en').value;
+            if (contentEn) {
+                quillEn.root.innerHTML = contentEn;
             }
-        });
 
-        // Set initial content
-        const contentEn = document.getElementById('content_en').value;
-        if (contentEn) {
-            quillEn.root.innerHTML = contentEn;
+            // Force LTR direction after initialization
+            quillEn.root.setAttribute('dir', 'ltr');
+            quillEn.root.style.direction = 'ltr';
+            quillEn.root.style.textAlign = 'left';
+
+            // Update hidden field on content change
+            let enTimeout;
+            quillEn.on('text-change', function() {
+                clearTimeout(enTimeout);
+                enTimeout = setTimeout(() => {
+                    document.getElementById('content_en').value = quillEn.root.innerHTML;
+                }, 300);
+            });
+            
+            console.log('English editor initialized successfully');
+            updateEditorStatus('✅ English editor loaded successfully');
+        } catch (error) {
+            console.error('Error initializing English editor:', error);
+            updateEditorStatus('❌ Error loading English editor: ' + error.message);
+            showRetryButton();
         }
-
-        // Force LTR direction after initialization
-        quillEn.root.setAttribute('dir', 'ltr');
-        quillEn.root.style.direction = 'ltr';
-        quillEn.root.style.textAlign = 'left';
-
-        // Update hidden field on content change
-        let enTimeout;
-        quillEn.on('text-change', function() {
-            clearTimeout(enTimeout);
-            enTimeout = setTimeout(() => {
-                document.getElementById('content_en').value = quillEn.root.innerHTML;
-            }, 300);
-        });
+    } else {
+        console.error('English editor container not found');
+        updateEditorStatus('❌ English editor container not found');
+        showRetryButton();
     }
 
     // Initialize Arabic Editor
     const arabicContainer = document.getElementById('editor_ar');
     if (arabicContainer) {
-        quillAr = new Quill('#editor_ar', {
-            theme: 'snow',
-            placeholder: 'اكتب محتوى المقال بالعربية...',
-            modules: {
-                toolbar: arabicToolbarConfig
+        console.log('Initializing Arabic editor...');
+        try {
+            quillAr = new Quill('#editor_ar', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى المقال بالعربية...',
+                modules: {
+                    toolbar: arabicToolbarConfig
+                }
+            });
+
+            // Set initial content
+            const contentAr = document.getElementById('content_ar').value;
+            if (contentAr) {
+                quillAr.root.innerHTML = contentAr;
             }
-        });
 
-        // Set initial content
-        const contentAr = document.getElementById('content_ar').value;
-        if (contentAr) {
-            quillAr.root.innerHTML = contentAr;
+            // Force RTL direction after initialization
+            quillAr.root.setAttribute('dir', 'rtl');
+            quillAr.root.style.direction = 'rtl';
+            quillAr.root.style.textAlign = 'right';
+
+            // Update hidden field on content change
+            let arTimeout;
+            quillAr.on('text-change', function() {
+                clearTimeout(arTimeout);
+                arTimeout = setTimeout(() => {
+                    document.getElementById('content_ar').value = quillAr.root.innerHTML;
+                }, 300);
+            });
+            
+            console.log('Arabic editor initialized successfully');
+            updateEditorStatus('✅ Both English and Arabic editors loaded successfully!');
+        } catch (error) {
+            console.error('Error initializing Arabic editor:', error);
+            updateEditorStatus('❌ Error loading Arabic editor: ' + error.message);
+            showRetryButton();
         }
-
-        // Force RTL direction after initialization
-        quillAr.root.setAttribute('dir', 'rtl');
-        quillAr.root.style.direction = 'rtl';
-        quillAr.root.style.textAlign = 'right';
-
-        // Update hidden field on content change
-        let arTimeout;
-        quillAr.on('text-change', function() {
-            clearTimeout(arTimeout);
-            arTimeout = setTimeout(() => {
-                document.getElementById('content_ar').value = quillAr.root.innerHTML;
-            }, 300);
-        });
+    } else {
+        console.error('Arabic editor container not found');
+        updateEditorStatus('❌ Arabic editor container not found');
+        showRetryButton();
     }
 
     // Form submission handler
