@@ -29,6 +29,9 @@ class Article extends Model
         'read_time',
         'views',
         'is_published',
+        'show_toc',
+        'toc_mode',
+        'toc_content',
         'published_at',
         'prerequisites',
         'prerequisites_ar',
@@ -41,6 +44,7 @@ class Article extends Model
     protected $casts = [
         'tags' => 'array',
         'is_published' => 'boolean',
+        'show_toc' => 'boolean',
         'published_at' => 'datetime',
         'views' => 'integer',
         'read_time' => 'integer'

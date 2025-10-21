@@ -265,6 +265,65 @@
                             </p>
                         </div>
 
+                        <!-- Table of Contents -->
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="show_toc" value="1" {{ old('show_toc', $article->show_toc ?? true) ? 'checked' : '' }}
+                                       class="rounded bg-gray-700 border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-gray-800">
+                                <span class="ml-2 text-gray-300">Show Table of Contents</span>
+                            </label>
+                            <p class="text-gray-400 text-xs mt-1">
+                                <span class="text-blue-300">📋 Display TOC sidebar for long articles</span><br>
+                                <span class="text-gray-400">✓ Checked = TOC enabled (recommended for articles with 4+ headings)</span>
+                            </p>
+                        </div>
+
+                        <!-- TOC Mode -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">TOC Mode</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="toc_mode" value="auto" {{ old('toc_mode', $article->toc_mode ?? 'auto') === 'auto' ? 'checked' : '' }}
+                                           class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-300 text-sm">Auto (from headings)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="toc_mode" value="custom" {{ old('toc_mode', $article->toc_mode ?? 'auto') === 'custom' ? 'checked' : '' }}
+                                           class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-300 text-sm">Custom</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Custom TOC Content -->
+                        <div id="toc-custom-section" style="{{ old('toc_mode', $article->toc_mode ?? 'auto') === 'custom' ? 'display: block;' : 'display: none;' }}">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">
+                                📋 Custom TOC Items
+                            </label>
+                            
+                            <!-- TOC Items Container -->
+                            <div id="toc-items-container" class="space-y-3 mb-3">
+                                <!-- Items will be added here -->
+                            </div>
+                            
+                            <!-- Hidden field for JSON storage -->
+                            <input type="hidden" name="toc_content" id="toc_content" value='{{ old('toc_content', $article->toc_content) }}'>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex gap-2">
+                                <button type="button" id="add-toc-item-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                                    ➕ Add Item
+                                </button>
+                                <button type="button" id="generate-toc-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium">
+                                    🔄 Auto-Generate
+                                </button>
+                            </div>
+                            
+                            <p class="text-gray-400 text-xs mt-2">
+                                💡 Tip: Use Auto-Generate to extract headings from your content, then customize as needed!
+                            </p>
+                        </div>
+
                         <!-- Publish Date -->
                         <div>
                             <label class="block text-sm font-medium text-gray-300 mb-2">Publish Date</label>
@@ -1359,6 +1418,189 @@ function updateTableData(builder) {
     };
     
     hiddenInput.value = JSON.stringify(tableData);
+}
+
+// TOC Visual Editor
+let tocItemsData = [];
+let tocItemCounter = 0;
+
+const tocModeRadios = document.querySelectorAll('input[name="toc_mode"]');
+const tocCustomSection = document.getElementById('toc-custom-section');
+const generateTocBtn = document.getElementById('generate-toc-btn');
+const addTocItemBtn = document.getElementById('add-toc-item-btn');
+const tocItemsContainer = document.getElementById('toc-items-container');
+const tocContentHidden = document.getElementById('toc_content');
+
+// Load existing TOC items if any
+if (tocContentHidden && tocContentHidden.value) {
+    try {
+        tocItemsData = JSON.parse(tocContentHidden.value);
+        tocItemsData.forEach(item => addTocItemToUI(item));
+    } catch (e) {
+        console.warn('Failed to parse existing TOC content');
+    }
+}
+
+// Toggle custom TOC section
+function toggleTocCustomSection() {
+    const selectedMode = document.querySelector('input[name="toc_mode"]:checked').value;
+    tocCustomSection.style.display = selectedMode === 'custom' ? 'block' : 'none';
+}
+
+tocModeRadios.forEach(radio => {
+    radio.addEventListener('change', toggleTocCustomSection);
+});
+
+// Add new TOC item
+addTocItemBtn.addEventListener('click', function() {
+    addTocItemToUI({
+        text: 'New Section',
+        link: '#new-section',
+        level: 1,
+        external: false
+    });
+});
+
+// Auto-generate TOC from content
+generateTocBtn.addEventListener('click', function() {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = quillEn ? quillEn.root.innerHTML : '';
+    const headings = tempDiv.querySelectorAll('h1, h2, h3, h4');
+    
+    if (headings.length === 0) {
+        alert('No headings found! Add some H1, H2, H3, or H4 headings to your content first.');
+        return;
+    }
+    
+    // Clear existing items
+    tocItemsContainer.innerHTML = '';
+    tocItemsData = [];
+    tocItemCounter = 0;
+    
+    // Add items from headings
+    headings.forEach((heading, index) => {
+        addTocItemToUI({
+            text: heading.textContent.trim(),
+            link: '#heading-' + index,
+            level: parseInt(heading.tagName.substring(1)),
+            external: false
+        });
+    });
+    
+    alert('Generated ' + headings.length + ' TOC items from content!');
+});
+
+function addTocItemToUI(item) {
+    const itemId = 'toc-item-' + tocItemCounter++;
+    const itemIndex = tocItemsData.length;
+    tocItemsData.push(item);
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'bg-gray-800 border border-gray-600 rounded-lg p-4';
+    itemDiv.id = itemId;
+    itemDiv.setAttribute('data-index', itemIndex);
+    
+    itemDiv.innerHTML = `
+        <div class="flex items-start gap-3">
+            <div class="flex-1 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Text</label>
+                        <input type="text" 
+                               class="toc-item-text w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
+                               value="${item.text}" 
+                               placeholder="Section name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Link</label>
+                        <input type="text" 
+                               class="toc-item-link w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
+                               value="${item.link}" 
+                               placeholder="#section-id or https://...">
+                    </div>
+                </div>
+                <div class="flex gap-3 items-center">
+                    <div class="flex-1">
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Level</label>
+                        <select class="toc-item-level px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm">
+                            <option value="1" ${item.level === 1 ? 'selected' : ''}>1 - Main</option>
+                            <option value="2" ${item.level === 2 ? 'selected' : ''}>2 - Sub</option>
+                            <option value="3" ${item.level === 3 ? 'selected' : ''}>3 - Sub-sub</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center pt-5">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" 
+                                   class="toc-item-external rounded bg-gray-700 border-gray-600 text-blue-600"
+                                   ${item.external ? 'checked' : ''}>
+                            <span class="ml-2 text-xs text-gray-400">External link</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <button type="button" class="toc-move-up px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white rounded text-xs" title="Move up">
+                    ▲
+                </button>
+                <button type="button" class="toc-move-down px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white rounded text-xs" title="Move down">
+                    ▼
+                </button>
+                <button type="button" class="toc-delete px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs" title="Delete">
+                    ✕
+                </button>
+            </div>
+        </div>
+    `;
+    
+    tocItemsContainer.appendChild(itemDiv);
+    
+    // Event listeners for this item
+    const textInput = itemDiv.querySelector('.toc-item-text');
+    const linkInput = itemDiv.querySelector('.toc-item-link');
+    const levelSelect = itemDiv.querySelector('.toc-item-level');
+    const externalCheckbox = itemDiv.querySelector('.toc-item-external');
+    const deleteBtn = itemDiv.querySelector('.toc-delete');
+    const moveUpBtn = itemDiv.querySelector('.toc-move-up');
+    const moveDownBtn = itemDiv.querySelector('.toc-move-down');
+    
+    textInput.addEventListener('input', () => updateTocData());
+    linkInput.addEventListener('input', () => updateTocData());
+    levelSelect.addEventListener('change', () => updateTocData());
+    externalCheckbox.addEventListener('change', () => updateTocData());
+    
+    deleteBtn.addEventListener('click', () => {
+        itemDiv.remove();
+        updateTocData();
+    });
+    
+    moveUpBtn.addEventListener('click', () => {
+        const prev = itemDiv.previousElementSibling;
+        if (prev) {
+            tocItemsContainer.insertBefore(itemDiv, prev);
+            updateTocData();
+        }
+    });
+    
+    moveDownBtn.addEventListener('click', () => {
+        const next = itemDiv.nextElementSibling;
+        if (next) {
+            tocItemsContainer.insertBefore(next, itemDiv);
+            updateTocData();
+        }
+    });
+}
+
+function updateTocData() {
+    const items = [];
+    tocItemsContainer.querySelectorAll('[id^="toc-item-"]').forEach(itemDiv => {
+        items.push({
+            text: itemDiv.querySelector('.toc-item-text').value,
+            link: itemDiv.querySelector('.toc-item-link').value,
+            level: parseInt(itemDiv.querySelector('.toc-item-level').value),
+            external: itemDiv.querySelector('.toc-item-external').checked
+        });
+    });
+    tocContentHidden.value = JSON.stringify(items);
 }
 </script>
 @endpush

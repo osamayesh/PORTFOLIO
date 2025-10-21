@@ -2,8 +2,15 @@
 
 @section('title', $article->title . ' - Osama Ayesh')
 
+@section('meta')
+<meta name="article-id" content="{{ $article->id }}">
+@endsection
+
 @section('content')
-<div class="container mx-auto max-w-4xl py-16">
+<!-- Reading Progress Bar -->
+<div id="reading-progress" style="width: 0%;"></div>
+
+<div class="container mx-auto max-w-7xl py-16">
     <!-- Article Header -->
     <div class="text-center mb-12">
         <div class="mb-4">
@@ -21,7 +28,26 @@
         </div>
     </div>
 
-    <!-- Article Content -->
+    <!-- Table of Contents (Fixed Sidebar) -->
+    <aside id="toc-container" class="hidden xl:block" 
+           data-show-toc="{{ $article->show_toc ? 'true' : 'false' }}"
+           data-toc-mode="{{ $article->toc_mode ?? 'auto' }}"
+           data-toc-content="{{ $article->toc_content ? htmlspecialchars($article->toc_content) : '' }}">
+        <div class="toc-sidebar rounded-lg p-6">
+            <h3 class="text-lg font-bold text-blue-400 mb-4 flex items-center gap-2 {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                </svg>
+                <span>{{ app()->getLocale() === 'ar' ? 'فهرس المحتوى' : 'Table of Contents' }}</span>
+            </h3>
+            <nav id="table-of-contents" class="space-y-1">
+                <!-- Will be populated by JavaScript -->
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Article Content -->
+    <div class="article-main-content">
     <div class="bg-gray-900 bg-opacity-70 rounded-lg p-8 mb-8 article-container">
         <!-- Article Description -->
         <div class="mb-8 p-6 bg-blue-600 bg-opacity-10 rounded-lg border-l-4 border-blue-500 description-container">
@@ -156,6 +182,7 @@
             </div>
         @endif
     </div>
+    </div><!-- Close article-main-content -->
 
     <!-- Navigation -->
     <div class="flex justify-between items-center">
@@ -174,359 +201,112 @@
             @endif
         </a>
     </div>
+
+    <!-- AI Chat Assistant -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Toggle Button -->
+        <button id="ai-chat-toggle" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full p-4 shadow-2xl transition-all transform hover:scale-110 hover:shadow-blue-500/50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+            </svg>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="ai-chat-window" class="hidden fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] bg-gray-900 border-2 border-blue-500 rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    <h3 class="text-white font-bold">{{ app()->getLocale() === 'ar' ? 'مساعد AI' : 'AI Assistant' }}</h3>
+                </div>
+                <button id="close-chat" class="text-white hover:text-gray-200 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="p-3 bg-gray-800 border-b border-gray-700">
+                <div class="flex gap-2 flex-wrap">
+                    <button class="quick-action-btn text-xs px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all" data-action="summarize">
+                        {{ app()->getLocale() === 'ar' ? '📝 لخص المقال' : '📝 Summarize' }}
+                    </button>
+                    <button class="quick-action-btn text-xs px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition-all" data-action="key-points">
+                        {{ app()->getLocale() === 'ar' ? '🎯 النقاط الرئيسية' : '🎯 Key Points' }}
+                    </button>
+                    <button class="quick-action-btn text-xs px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all" data-action="explain">
+                        {{ app()->getLocale() === 'ar' ? '💡 اشرح بشكل مبسط' : '💡 Explain Simply' }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="h-96 overflow-y-auto p-4 space-y-3 bg-gray-950">
+                <div class="flex items-start gap-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xs font-bold">AI</span>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-3 max-w-[80%]">
+                        <p class="text-gray-300 text-sm {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+                            {{ app()->getLocale() === 'ar' ? 'مرحباً! أنا هنا لمساعدتك في فهم هذا المقال. اسألني أي سؤال!' : 'Hello! I\'m here to help you understand this article. Ask me anything!' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="p-3 bg-gray-900 border-t border-gray-700">
+                <div class="flex gap-2">
+                    <input 
+                        type="text" 
+                        id="chat-input" 
+                        placeholder="{{ app()->getLocale() === 'ar' ? 'اكتب سؤالك هنا...' : 'Ask a question...' }}" 
+                        class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"
+                    >
+                    <button 
+                        id="send-message" 
+                        class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @push('styles')
+<!-- Table of Contents CSS -->
+<link rel="stylesheet" href="{{ asset('css/article-toc.css') }}">
+
+<!-- Article Content CSS -->
+<link rel="stylesheet" href="{{ asset('css/article-content.css') }}">
+
+<!-- AI Chat Animation Styles -->
 <style>
-    .rtl {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .ltr {
-        direction: ltr;
-        text-align: left;
-    }
-    
-    .prose.rtl {
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .prose.ltr {
-        direction: ltr;
-        text-align: left;
-    }
-    
-    .prose p {
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-    }
-
-    /* Article Content Formatting - Simple and Reliable */
-    .article-content {
-        white-space: pre-line; /* Preserves line breaks */
-        word-wrap: break-word;
-        font-size: 1.125rem;
-        line-height: 1.7;
-        font-weight: 500; /* Improved from 400 for better readability */
-    }
-
-    
-
-    .article-content h1 { font-size: 2rem; }
-    .article-content h2 { font-size: 1.75rem; }
-    .article-content h3 { font-size: 1.5rem; }
-    .article-content h4 { font-size: 1.25rem; }
-
-    .article-content p {
-        margin-bottom: 1rem;
-        line-height: 1.7;
-        font-weight: 500; /* Consistent weight */
-    }
-
-    .article-content ul, .article-content ol {
-        margin: 1rem 0;
-        padding-left: 2rem;
-        font-weight: 500; /* Consistent weight */
-    }
-
-    .article-content ul {
-        list-style-type: disc;
-    }
-
-    .article-content ol {
-        list-style-type: decimal;
-    }
-
-    .article-content li {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-        font-weight: 500; /* Consistent weight */
-    }
-
-    /* Enhanced emphasis with multiple visual cues */
-    .article-content strong {
-        color: #fbbf24; /* yellow-400 */
-        font-weight: 600;
-        background-color: rgba(251, 191, 36, 0.1); /* Light background highlight */
-        padding: 0.1rem 0.2rem;
-        border-radius: 0.125rem;
-    }
-
-    .article-content em {
-        color: #a78bfa; /* violet-400 */
-        font-style: italic;
-        background-color: rgba(167, 139, 250, 0.1); /* Light background highlight */
-        padding: 0.1rem 0.2rem;
-        border-radius: 0.125rem;
-    }
-
-    .article-content code:not(pre code) {
-        background-color: #374151; /* gray-700 */
-        color: #fbbf24; /* yellow-400 */
-        padding: 0.2rem 0.4rem;
-        border-radius: 0.25rem;
-        font-size: 0.875rem;
-        font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
-        font-weight: 500;
-        border: 1px solid rgba(251, 191, 36, 0.2); /* Subtle border for better definition */
-    }
-
-    .article-content a {
-        color: #60a5fa; /* blue-400 */
-        text-decoration: none;
-        transition: color 0.3s ease;
-        font-weight: 500;
-        background-color: rgba(96, 165, 250, 0.1); /* Light background highlight */
-        padding: 0.1rem 0.2rem;
-        border-radius: 0.125rem;
-    }
-
-    .article-content a:hover {
-        color: #93c5fd; /* blue-300 */
-        background-color: rgba(96, 165, 250, 0.2);
-        text-decoration: underline;
-    }
-
-    .article-content blockquote {
-        border-left: 4px solid #3b82f6; /* blue-500 */
-        background-color: rgba(59, 130, 246, 0.15); /* Slightly brighter background */
-        padding: 1rem 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 0.5rem;
-        color: #e5e7eb;
-        font-weight: 500;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1); /* Light box-shadow */
-    }
-
-    /* RTL specific styles */
-    .article-content.rtl ul, .article-content.rtl ol {
-        padding-right: 2rem;
-        padding-left: 0;
-    }
-
-    .article-content.rtl blockquote {
-        border-left: none;
-        border-right: 4px solid #3b82f6;
-    }
-
-    /* Special styling for technical terms and key concepts */
-    .article-content .highlight-term {
-        color: #34d399; /* emerald-400 */
-        background-color: rgba(52, 211, 153, 0.1);
-        padding: 0.1rem 0.3rem;
-        border-radius: 0.25rem;
-        border-bottom: 2px dotted #34d399;
-        font-weight: 600;
-        cursor: help;
-    }
-
-    /* Improved focus states for accessibility */
-    .article-content a:focus,
-    .article-content strong:focus,
-    .article-content em:focus {
-        outline: 2px solid #60a5fa;
-        outline-offset: 2px;
-        box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
-    }
-
-    /* Better list styling with consistent bullet points */
-    .article-content ul li::marker {
-        color: #60a5fa;
-        font-weight: bold;
-    }
-
-    .article-content ol li::marker {
-        color: #60a5fa;
-        font-weight: bold;
-    }
-
-    /* Fallback for older browsers - add bullet symbols */
-    .article-content ul li:before {
-        content: "•";
-        color: #60a5fa;
-        font-weight: bold;
-        display: inline-block;
-        width: 1em;
-        margin-left: -1em;
-        font-size: 1.2em;
-        line-height: 1;
-    }
-
-    /* Code Snippet Styles */
-    .code-snippet-container {
-        position: relative;
-        background-color: #1a202c; /* Dark background like the image */
-        border-radius: 0.5rem;
-        padding: 1.5rem; /* Equivalent to p-6 */
-        overflow: hidden; /* Ensures the button doesn't overflow weirdly with line numbers */
-    }
-
-    .code-snippet-container pre[class*="language-"] {
-        background-color: transparent !important; /* Override Prism default if any */
-        padding: 0 !important; /* Reset padding as container handles it */
-        margin: 0 !important; /* Reset margin */
-        border-radius: 0; /* Reset border-radius */
-        font-size: 0.875rem; /* text-sm */
-        line-height: 1.6;
-        color: #e2e8f0; /* Light text color */
-        white-space: pre-wrap;       /* Since CSS 2.1 */
-        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-        white-space: -pre-wrap;      /* Opera 4-6 */
-        white-space: -o-pre-wrap;    /* Opera 7 */
-        word-wrap: break-word;       /* Internet Explorer 5.5+ */
-    }
-
-    .code-snippet-container pre[class*="language-"] code {
-        font-family: 'Fira Code', 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
-        color: #e2e8f0; /* Light text color */
-    }
-
-    .copy-button {
-        position: absolute;
-        top: 0.75rem; /* Adjust as needed */
-        right: 0.75rem; /* Adjust as needed */
-        background-color: #4a5568; /* gray-700 */
-        color: white;
-        padding: 0.25rem 0.5rem; /* px-2 py-1 */
-        font-size: 0.75rem; /* text-xs */
-        border-radius: 0.25rem; /* rounded */
-        cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-    }
-
-    .code-snippet-container:hover .copy-button {
-        opacity: 1;
-    }
-    
-    /* Prism.js line numbers adjustments if you use them */
-    .line-numbers .line-numbers-rows {
-        border-right: 1px solid #4a5568; /* A bit darker border for line numbers */
-        padding-top: 1.5rem !important; /* Align with container padding */
-        padding-bottom: 1.5rem !important; /* Align with container padding */
-    }
-    .line-numbers-rows > span:before {
-        color: #718096; /* gray-500 */
-    }
-
-    /* Enhanced article container with brighter background and shadow */
-    .article-container {
-        background-color: rgba(17, 24, 39, 0.75) !important; /* 5% brighter than bg-gray-900 */
-        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08); /* Light blue box-shadow */
-        border: 1px solid rgba(59, 130, 246, 0.1); /* Subtle border */
-    }
-    
-    .description-container {
-        background-color: rgba(59, 130, 246, 0.15) !important; /* 5% brighter */
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-    }
-    
-    .prose.rtl {
-        direction: rtl;
-        text-align: right;
-    }
-
-    /* Comparison Table Styles */
-    .comparison-table-container {
-        margin: 1.5rem 0;
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
-    }
-
-    .comparison-table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 0.9rem;
-    }
-
-    .comparison-table.table-default th {
-        background-color: #374151;
-        padding: 0.75rem 1rem;
-        border-bottom: 2px solid #4b5563;
-    }
-
-    .comparison-table.table-default td {
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #374151;
-    }
-
-    .comparison-table.table-compact th {
-        padding: 0.5rem 0.75rem;
-        background-color: #374151;
-        border-bottom: 1px solid #4b5563;
-    }
-
-    .comparison-table.table-compact td {
-        padding: 0.5rem 0.75rem;
-        border-bottom: 1px solid #374151;
-    }
-
-    .comparison-table.table-modern th {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        padding: 1rem;
-        border: none;
-        color: white;
-        font-weight: 600;
-    }
-
-    .comparison-table.table-modern td {
-        padding: 1rem;
-        border: none;
-        border-bottom: 1px solid #374151;
-    }
-
-    .comparison-table.table-striped tbody tr:nth-child(even) {
-        background-color: #1f2937;
-    }
-
-    .comparison-table.table-striped tbody tr:nth-child(odd) {
-        background-color: #111827;
-    }
-
-    .comparison-table th,
-    .comparison-table td {
-        text-align: left;
-        vertical-align: top;
-    }
-
-    .comparison-table.rtl th,
-    .comparison-table.rtl td {
-        text-align: right;
-    }
-
-    .comparison-table tbody tr:hover {
-        background-color: #374151 !important;
-    }
-
-    /* Responsive table scroll */
-    .comparison-table-container .overflow-x-auto {
-        scrollbar-width: thin;
-        scrollbar-color: #4b5563 #1f2937;
-    }
-
-    .comparison-table-container .overflow-x-auto::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .comparison-table-container .overflow-x-auto::-webkit-scrollbar-track {
-        background: #1f2937;
-    }
-
-    .comparison-table-container .overflow-x-auto::-webkit-scrollbar-thumb {
-        background: #4b5563;
-        border-radius: 4px;
-    }
-
-    .comparison-table-container .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-        background: #6b7280;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
 </style>
 @endpush
 
 @push('scripts')
+<!-- Table of Contents JavaScript -->
+<script src="{{ asset('js/article-toc.js') }}"></script>
+
+<!-- AI Chat JavaScript -->
+<script src="{{ asset('js/article-ai-chat.js') }}"></script>
+
 <script>
     function copyCode(button) {
         const preElement = button.nextElementSibling; // Get the <pre> element
