@@ -103,6 +103,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
+// AI Chat Route with Rate Limiting
+Route::post('/api/chat/article', [ArticleController::class, 'chatWithAI'])
+    ->middleware(['throttle:ai-chat-minute', 'throttle:ai-chat-daily'])
+    ->name('chat.article');
+
 // Test route for category functionality
 Route::get('/test-categories', function () {
     $categories = \App\Models\Category::with(['parent', 'children'])->get();
