@@ -134,7 +134,8 @@ return [
 
     'view_tracking' => [
         'enabled' => env('VIEW_TRACKING_ENABLED', true),
-        'unique_hours' => env('VIEW_TRACKING_UNIQUE_HOURS', 24), // Hours before same IP can be counted again
+        'permanent' => env('VIEW_TRACKING_PERMANENT', true), // If true, one IP = one view forever. If false, uses unique_hours
+        'unique_hours' => env('VIEW_TRACKING_UNIQUE_HOURS', 24), // Hours before same IP can be counted again (only used if permanent is false)
         'cleanup_days' => env('VIEW_TRACKING_CLEANUP_DAYS', 365), // Days to keep view records
         'track_bots' => env('VIEW_TRACKING_TRACK_BOTS', false), // Whether to track bot views
     ],

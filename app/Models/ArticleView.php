@@ -41,6 +41,19 @@ class ArticleView extends Model
             return false;
         }
 
+        // Check if permanent tracking is enabled (one IP = one view forever)
+        $isPermanent = config('app.view_tracking.permanent', true);
+        
+        if ($isPermanent) {
+            // Permanent tracking: Check if this IP has EVER viewed this article
+            $existingView = static::where('article_id', $articleId)
+                ->where('ip_address', $ipAddress)
+                ->first();
+                
+            return !$existingView;
+        }
+        
+        // Temporary tracking: Check if this IP has viewed within the time window
         $uniqueHours = $uniqueHours ?? config('app.view_tracking.unique_hours', 24);
         $cutoffTime = Carbon::now()->subHours($uniqueHours);
         
