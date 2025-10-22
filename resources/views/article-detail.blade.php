@@ -297,6 +297,20 @@
 .animate-fadeIn {
     animation: fadeIn 0.3s ease-out;
 }
+
+/* Force AI Chat Button to be visible */
+#ai-chat-toggle {
+    display: block !important;
+    visibility: visible !important;
+    z-index: 9999 !important;
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+}
+
+#ai-chat-window {
+    z-index: 9998 !important;
+}
 </style>
 @endpush
 
