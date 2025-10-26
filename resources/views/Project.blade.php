@@ -233,7 +233,122 @@
                 </div>
             </div>
         </div>
+
+        <!-- WebApp-AWS-AutoScaling-ALB -->
+          <div class="project-card-container">
+            <div class="project-card">
+                <div class="project-card-front">
+                    <img src="{{ asset('images/Aws.png') }}" alt="Blog Platform" class="w-full h-full object-cover rounded-lg">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-lg"></div>
+                    <div class="absolute bottom-0 p-3 md:p-4">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-white">{{ __('projects.AWS_title') }}</h3>
+                        <div class="flex flex-wrap gap-1 mb-1">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">Laravel</span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">Vue.js</span>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="project-card-back">
+                    <div class="p-3 md:p-4">
+                        <h3 class="text-base md:text-lg font-bold mb-2 text-white">{{ __('projects.AWS_title') }}</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mb-3">
+                            {{ __('projects.AWS_desc') }}
+                        </p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">DevOps </span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">Api</span>
+                            <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">AWS </span>
+                        </div>
+                        <a href="https://github.com/osamayesh/AWS-AutoScaling-ALB" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-xs md:text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            {{ __('projects.source_code') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Angular project -->
+       <div class="project-card-container">
+            <div class="project-card">
+                <div class="project-card-front">
+                    <img src="{{ asset('images/Angular.png') }}" alt="Blog Platform" class="w-full h-full object-cover rounded-lg">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-lg"></div>
+                    <div class="absolute bottom-0 p-3 md:p-4">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-white">{{ __('projects.angular_title') }}</h3>
+                        <div class="flex flex-wrap gap-1 mb-1">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">Angular</span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">tailwind css</span>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="project-card-back">
+                    <div class="p-3 md:p-4">
+                        <h3 class="text-base md:text-lg font-bold mb-2 text-white">{{ __('projects.angular_title') }}</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mb-3">
+                            {{ __('projects.angular_desc') }}
+                        </p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">Angular </span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">Api Core</span>
+                            <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">sql </span>
+                        </div>
+                        <a href="https://github.com/osamayesh/Phony" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-xs md:text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            {{ __('projects.source_code') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <!-- Ezy project -->
+
+          <div class="project-card-container">
+            <div class="project-card">
+                <div class="project-card-front">
+                    <img src="{{ asset('images/Ezy.png') }}" alt="Blog Platform" class="w-full h-full object-cover rounded-lg">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-lg"></div>
+                    <div class="absolute bottom-0 p-3 md:p-4">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-white">{{ __('projects.ezy_title') }}</h3>
+                        <div class="flex flex-wrap gap-1 mb-1">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">Laravel</span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">tailwind css</span>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="project-card-back">
+                    <div class="p-3 md:p-4">
+                        <h3 class="text-base md:text-lg font-bold mb-2 text-white">{{ __('projects.ezy_title') }}</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mb-3">
+                            {{ __('projects.ezy_desc') }}
+                        </p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            <span class="px-2 py-0.5 bg-indigo-900 text-indigo-200 text-xs rounded">Laravel </span>
+                            <span class="px-2 py-0.5 bg-green-900 text-green-200 text-xs rounded">mysql</span>
+                            <span class="px-2 py-0.5 bg-blue-900 text-blue-200 text-xs rounded">livewire </span>
+                        </div>
+                        <a href="https://github.com/osamayesh/Course-Platform" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-xs md:text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            {{ __('projects.source_code') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
+  
+    
 </div>
 
 <style>
