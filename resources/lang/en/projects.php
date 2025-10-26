@@ -13,7 +13,9 @@ return [
     'portfolio_title' => 'PORTFOLIO WEBSITE',
     'contact_title' => 'SMART CONTACT MANAGER',
     'api_title' => 'API',
-    
+    'AWS_title' => 'AWS Deployment',
+    'angular_title' => 'Angular Project',
+    'ezy_title' => 'COURSE PLATFORM',
     // Project descriptions
     'bookstore_desc' => 'A dynamic recipe search app that helps you find delicious recipes based on ingredients. Powered by an API for quick and easy meal inspiration!',
     'employee_desc' => 'A full-featured employee management system with CRUD operations, user authentication',
@@ -21,4 +23,7 @@ return [
     'portfolio_desc' => 'A modern and responsive personal portfolio website built with Laravel and Tailwind CSS, showcasing my skills, projects, and professional experience.',
     'contact_desc' => 'Smart Contact Manager. A responsive contact management app with grouped contacts, advanced search, rich profiles, user authentication, dark mode, offline support, and contact sharing with LocalStorage.',
     'api_desc' => 'A secure and lightweight RESTful API for OTP-based login. It handles OTP generation, delivery (via email/SMS), validation, expiration logic, and rate limiting. Ideal for passwordless authentication and user verification workflows.',
+    'AWS_desc' => 'A scalable, cloud-native Task Manager API built with .NET Core and deployed on AWS using modern DevOps practices. Features auto-scaling, load balancing, and comprehensive monitoring.',
+    'angular_desc' => 'A dynamic web application built with Angular, featuring a responsive design and seamless user experience. Utilizes RESTful APIs for data management and incorporates modern UI/UX principles.',
+    'ezy_desc' => 'A comprehensive online learning platform built with Laravel and Tailwind CSS. Features course management, video streaming, student enrollment, progress tracking, quiz system, and responsive design for seamless learning experience.',
 ]; 
